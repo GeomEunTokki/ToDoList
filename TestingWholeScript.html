@@ -1,0 +1,201 @@
+<!-- Checklist on Webpage -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <!--Initialize the viewport (size of the window or webpage) to however the display is (makes sizing relative). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  margin: 0;
+  min-width: 250px;
+}
+/* Using padding and border, determine the element's total width and height. Here, 
+  we want a border around everything.*/
+* {
+  box-sizing: border-box;
+}
+/* Remove margins and padding from the list because the extra space is not 
+  necessary here.*/
+ul {
+  margin: 0;
+  padding: 0;
+}
+/* For the style of the list items:
+  - cursor for the tool used to navigate around the platform
+  - relative so that the element is positioned relative to the other elements (shifts when window is resized)
+  - padding space around each list item to make each item evenly spaced
+  - no list-style-type, so no bullet points
+  - background color of each list item is set to gray
+  - font size of the list item title, or whatever the to-do thing is
+  - transition for how long it takes the transition between two colors take when cursor is hovered over the element
+  */
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  list-style-type: none;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.4s;
+}
+/* Aesthetic purpose: Set all odd list items to a different color (zebra-stripes). In this case, light gray 
+  to a slightly darker gray*/
+ul li:nth-child(odd) {
+  background: #f9f9f9;
+}
+/* Aesthetic purpose: Darker background-color when cursor is hovering over the item element */
+ul li:hover {
+  background: #ddd;
+}
+/* When clicked on, background color is darkened and text is striked-out with the text-decoration. (Task is completed,
+  and still keeps the task item in the list.*/
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+/* Aesthetic purpose: Add a "checked" mark when task item is clicked on. This would serve as our list-style-type.
+  This would manually create the check shape, with the position being absolute (stationary) next to the task item.*/
+ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #adcceb;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+/* Aesthetic purpose: Manually create the close button. */
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+}
+  /* Aesthetic purpose: change background-color of close box when cursor is hovered over it
+.close:hover {
+  background-color: #adcceb;
+  color: white;
+}
+/* Aesthetic purpose: Blue header the text centered. */
+.header {
+  background-color: #adcceb;
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+/* Clears tasks from the Add-on box after "Add it in!" button is clicked. */
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Aesthetic purpose: Style the input */
+input {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+}
+/* Aesthetic purpose: Style the "Add" button */
+.addBtn {
+  padding: 10px;
+  width: 25%;
+  background: #c7ccd1;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.4s;
+  border-radius: 0;
+}
+  
+.addBtn:hover {
+  background-color: #bbb;
+}
+</style>
+</head>
+<body style="background-color:#adcceb;">
+
+  <!--Adding the text into the headers and Add-on box (initialize size and font) -->
+<div id="myDIV" class="header">
+  <font face = "Courier" size = "6">- - My To-Do List - -</font><br />
+  <input type="text" id="myInput" placeholder="What do you need to do?">
+  <span onclick="newElement()" class="addBtn">Add it in!</span>
+</div>
+
+  <!-- Testing some task items here.-->
+<ul id="myUL">
+ <li>Testing 1</li>
+  <li class="checked">Testing Checked 1</li>
+</ul>
+
+ 
+<script>
+// Java Script Functions
+// Create a "close" button and append it to each list item. This will give a close button to each of the task item added into the list.
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
+// Click on a close button to hide the current list item. (Delete task item function.)
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
+// Create a new list item when clicking on the "Add" button. Puts new list item to the bottom of the rest of the items (Add-on function)
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+ 
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  
+  // Create a pop-up alert on Windows page if list add-on is invalid.
+  if (inputValue === '' || inputValue == ' ' || inputValue == '  ' || inputValue == '   ') {
+    alert("You must write something!");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }
+  document.getElementById("myInput").value = "";
+  
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
+</script>
+
+</body>
+</html>

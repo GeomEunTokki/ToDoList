@@ -1,0 +1,40 @@
+<html>
+<head>
+<title> CheckList! </title>
+<center>
+<h1>Login</h1>
+</center>
+</head>
+
+<style image src ="Website Image Test.jpg"></style>
+<body>
+<center>
+	<!--image src ="Website Test Image.jpg"/-->
+<input type="text" id="username" placeholder="Username"><br />
+<input type="password" id="password" placeholder="Password"><br />
+<input type="button" value="Log on" onClick="clicked() ">
+</center>
+	
+<script>
+function clicked() {
+	
+	var user = document.getElementById('username');
+	var pass = document.getElementById('password');
+
+	var coruser = "test";
+	var corpass = "123";
+
+	if(user.value == coruser) {
+		if(pass.value == corpass) {
+			window.alert("You are logged in as " + user.value);
+		} else {
+			window.alert("Incorrect username or password!");
+		}
+	} else {
+		window.alert("Incorrect username or password!");
+	}
+</script>
+</body>
+</html>
+
+
